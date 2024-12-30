@@ -23,7 +23,7 @@ function CreateUpdateVersionFrame()
 
     local step2 = promptFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     step2:SetPoint("TOPLEFT", linkInputBox, "BOTTOMLEFT", 0, -10)
-    step2:SetText("2. Open the .zip and add/replace the NaughtList at your AddOns folder:")
+    step2:SetText("2. Open the .zip and add/replace the NaughtList at your AddOns folder")
 
     local addonsPathInputBox = CreateFrame("EditBox", nil, promptFrame, "InputBoxTemplate")
     local addonsFolderText = "C:\\Program Files (x86)\\World of Warcraft\\_classic_era_\\Interface\\AddOns"
