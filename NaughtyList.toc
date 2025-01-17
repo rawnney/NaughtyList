@@ -1,0 +1,29 @@
+## Interface: 11505
+## Title: Naughty List
+## Notes: Track naughty players and keep them out of your party or raid for a smooth, trouble-free experience.
+## Version: 1.0.1
+## Author: Prom
+## X-Website: https://www.curseforge.com/wow/addons/naughtylist
+## X-Category: Chat & Communication
+## X-Localizations: enUS
+## SavedVariables: NaughtyListDB, NaughtyListConfigDB
+
+lib/Consts.lua
+lib/Helper.lua
+lib/ContextMenu.lua
+lib/Player.lua
+
+ui/Elements.lua
+ui/VersionFrame.lua
+ui/EventFrame.lua
+
+lib/Events.lua
+ui/DetailsFrame.lua
+ui/SettingsFrame.lua
+ui/MainFrame.lua
+
+lib/UpdateFrame.lua
+
+Core.lua
+
+ui/MinimapButton.lua
