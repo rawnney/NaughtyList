@@ -54,7 +54,9 @@ Consts.MessageCommands = makeReadOnly({
     PlayerUpdate = "playerUpdate@",
     PlayerRemove = "playerRemove@",
     Message = "message@",
-    Version = "version@"
+    Version = "version@",
+    UserRequest = "userRequest@",
+    UserResponse = "userResponse@",
 })
 
 function Consts:NormalizeClassName(className)

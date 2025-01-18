@@ -66,10 +66,6 @@ function SerializePlayer(playerName, playerData)
     return serialized
 end
 
-function ApplyPrefix(serialized, prefix)
-    return prefix .. serialized
-end
-
 function RemovePrefix(serialized, prefix)
     return string.sub(serialized, string.len(prefix) + 1)
 end
@@ -201,10 +197,16 @@ end
 function PlaySoundWarning()
     if not getSetting("enableSoundAlert") then return end
     local soundFile = "Interface\\AddOns\\NaughtyList\\sounds\\naughty_player_detected.mp3"
-    PlaySoundFile(soundFile, "Master", 0.8)
+    PlaySoundFile(soundFile, "Master", 1)
 end
 
 function PrintWarningMessage(naughtyPlayers)
     if not getSetting("enablePrintAlert") then return end
-    PrintError("\n\nAlert! You are grouped with naughty players (" .. #naughtyPlayers .. "): " .. table.concat(naughtyPlayers, ", ") .. "\n")
+    PrintError("Alert! You are grouped with naughty players (" .. #naughtyPlayers .. "): " .. table.concat(naughtyPlayers, ", ") .. "\n")
+end
+
+function RequestAddonUsers()
+    local text = Consts.MessageCommands.UserRequest
+    PrintInfo("Requesting user info...")
+    return SendAddonMessage(text)
 end

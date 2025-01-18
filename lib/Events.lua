@@ -185,6 +185,18 @@ function OnWhoListUpdate()
     PrintError("No exact match found for: " .. queryName)
 end
 
+function OnUserRequestReceived()
+    local count = 0
+    for _ in pairs(NaughtyListDB) do count = count + 1 end
+    local text = Consts.MessageCommands.UserResponse .. count .. "@" .. ADDON_VERSION
+    SendAddonMessage(text)
+end
+
+function OnUserResponseReceived(text, sender)
+    local _, count, version = strsplit("@", text)
+    PrintInfo(sender .. " has " .. count .. " players. (v" .. version .. ")")
+end
+
 function OnChatMsgAddonEvent(prefix, text, channel, sender)
     if not getSetting("enableGuildSync") or channel ~= "GUILD" then return end
 
@@ -197,6 +209,14 @@ function OnChatMsgAddonEvent(prefix, text, channel, sender)
 
     if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.PlayerRemove) then
         OnPlayerRemoveReceived(text, channel, sender)
+    end
+
+    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.UserRequest) then
+        OnUserRequestReceived()
+    end
+
+    if prefix == ADDON_PREFIX and name == "Promis" and text:find(Consts.MessageCommands.UserResponse) then
+        OnUserResponseReceived(text, sender)
     end
 
     if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.Message) then
