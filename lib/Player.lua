@@ -102,4 +102,14 @@ function RemovePlayer(playerName)
     PrintInfo(playerName .. " removed ")
 
     UpdateListFrame(nil)
+
+    if getSetting("enableGuildSync") then
+        local shareSuccess = ShareRemovedNaughtyPlayer(playerName)
+        if not shareSuccess then
+            PrintError("Failed to share removal for " .. playerName)
+        else
+            SendMessage(playerName .. " removed")
+            PrintDebug("Guild sync done")
+        end
+    end
 end

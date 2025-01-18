@@ -24,7 +24,7 @@ end
     
 
 function OnPlayerUpdateReceived(text, channel, sender)
-    local playerName, playerData = DeserializePlayer(RemovePrefix(text, Consts.MessageCommands.player))
+    local playerName, playerData = DeserializePlayer(RemovePrefix(text, Consts.MessageCommands.PlayerUpdate))
 
     if NaughtyListDB[playerName] then
         local updatedData = {}
@@ -47,6 +47,15 @@ function OnPlayerUpdateReceived(text, channel, sender)
     end
 
     UpdateListFrame(nil)
+end
+
+function OnPlayerRemoveReceived(text, channel, sender)
+    local playerName = RemovePrefix(text, Consts.MessageCommands.PlayerRemove)
+
+    if NaughtyListDB[playerName] then
+        NaughtyListDB[playerName] = nil
+        UpdateListFrame(nil)
+    end
 end
 
 hooksecurefunc("SetItemRef", function(link, text, button)
@@ -157,9 +166,8 @@ function OnWhoListUpdate()
         return
     end
 
-    eventFrame:UnregisterEvent(Consts.Events.WHO_LIST_UPDATE)
+    EventFrame:UnregisterEvent(Consts.Events.WHO_LIST_UPDATE)
     local numWhoResults = C_FriendList.GetNumWhoResults()
-
     if numWhoResults == 1 or numWhoResults == 0 then
         HideUIPanel(FriendsFrame)
     end
@@ -183,15 +191,19 @@ function OnChatMsgAddonEvent(prefix, text, channel, sender)
     local name, _ = UnitName("player")
     sender = sender:match("(.+)%-.+") or sender
 
-    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.player) then
+    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.PlayerUpdate) then
         OnPlayerUpdateReceived(text, channel, sender)
     end
 
-    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.message) then
-        text = text:match(Consts.MessageCommands.message .. "(.+)")
+    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.PlayerRemove) then
+        OnPlayerRemoveReceived(text, channel, sender)
+    end
+
+    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.Message) then
+        text = text:match(Consts.MessageCommands.Message .. "(.+)")
 
         -- Version check
-        if (text:match(Consts.MessageCommands.version .. "(.+)")) then
+        if (text:match(Consts.MessageCommands.Version .. "(.+)")) then
             OnVersionCheckReceived(text, channel, sender)
             return
         end

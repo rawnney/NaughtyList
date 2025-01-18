@@ -89,6 +89,16 @@ function DeserializePlayer(serialized)
     return playerName, data
 end
 
+function SendAddonMessage(text)
+    local sender = UnitName("player")
+    local success = C_ChatInfo.SendAddonMessage(ADDON_PREFIX, text, "GUILD", sender)
+    if success then
+        return true
+    else
+        return false
+    end
+end
+
 function ShareNaughtyPlayer(playerName, playerData)
 
     local serializedData = SerializePlayer(playerName, playerData)
@@ -98,14 +108,13 @@ function ShareNaughtyPlayer(playerName, playerData)
         return false
     end
 
-    local sender = UnitName("player")
-    local text = Consts.MessageCommands.player .. serializedData
-    local success = C_ChatInfo.SendAddonMessage(ADDON_PREFIX, text, "GUILD", sender)
-    if success then
-        return true
-    else
-        return false
-    end
+    local text = Consts.MessageCommands.PlayerUpdate .. serializedData
+    return SendAddonMessage(text)
+end
+
+function ShareRemovedNaughtyPlayer(playerName)
+    local text = Consts.MessageCommands.PlayerRemove .. playerName
+    return SendAddonMessage(text)
 end
 
 local throttleInterval = 0.5
@@ -114,8 +123,8 @@ local totalPlayersToSync = 0
 
 function SendMessage(message)
     local sender = UnitName("player")
-    local text = Consts.MessageCommands.message .. message .. " by " .. sender
-    C_ChatInfo.SendAddonMessage(ADDON_PREFIX, text, "GUILD", sender)
+    local text = Consts.MessageCommands.Message .. message .. " by " .. sender
+    SendAddonMessage(text)
 end
 
 local function ProcessQueue()
@@ -138,6 +147,11 @@ local function ProcessQueue()
 end
 
 function ShareAllNaughtyPlayers()
+    if #playerQueue > 0 then
+        PrintError("Wait for current sync to finish.")
+        return
+    end
+
     PrintInfo("Sharing all data...")
 
     playerQueue = {}
@@ -173,8 +187,8 @@ end
 
 function BroadcastVersion()
     local sender = UnitName("player")
-    local text = Consts.MessageCommands.message .. Consts.MessageCommands.version .. ADDON_VERSION
-    local success = C_ChatInfo.SendAddonMessage(ADDON_PREFIX, text, "GUILD", sender)
+    local text = Consts.MessageCommands.Message .. Consts.MessageCommands.Version .. ADDON_VERSION
+    local success = SendAddonMessage(text)
     if success then
         PrintDebug("Version " .. ADDON_VERSION .. " broadcasted.")
         return true

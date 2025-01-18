@@ -141,7 +141,7 @@ function CreateMainFrame()
             end
 
             if playerName and playerName ~= "" then
-                C_FriendList.SetWhoToUi(playerName)
+                C_FriendList.SetWhoToUi(1)
                 C_FriendList.SendWho(playerName)
             else
                 PrintError("Invalid player name")
@@ -151,7 +151,7 @@ function CreateMainFrame()
 
         inputBox:SetScript("OnEnterPressed", SendWhoQuery)
 
-        frame:RegisterEvent("WHO_LIST_UPDATE")
+        EventFrame:RegisterEvent(Consts.Events.WHO_LIST_UPDATE)
 
         local confirmButton = CreateFrame("Button", nil, promptFrame, "UIPanelButtonTemplate")
         confirmButton:SetSize(100, 25)
@@ -165,6 +165,7 @@ function CreateMainFrame()
         cancelButton:SetText("Cancel")
         cancelButton:SetScript("OnClick", function()
             promptFrame:Hide()
+            EventFrame:UnregisterEvent(Consts.Events.WHO_LIST_UPDATE)
         end)
     end)
 
