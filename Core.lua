@@ -1,5 +1,5 @@
 ADDON_NAME = "NaughtyList"
-ADDON_VERSION = "1.0.2"
+ADDON_VERSION = "1.0.3"
 ADDON_PREFIX = "NaughtyList"
 ADDON_DOWNLOAD_LINK = "https://github.com/rawnney/NaughtyList/archive/refs/heads/master.zip"
 
