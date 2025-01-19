@@ -197,38 +197,39 @@ function OnUserResponseReceived(text, sender)
     PrintInfo(sender .. " has " .. count .. " players. (v" .. version .. ")")
 end
 
+function OnMessageReceived(text)
+    local message = RemovePrefix(text, Consts.MessageCommands.Message)
+    PrintInfo(message)
+end
+
 function OnChatMsgAddonEvent(prefix, text, channel, sender)
     if not getSetting("enableGuildSync") or channel ~= "GUILD" then return end
 
     local name, _ = UnitName("player")
     sender = sender:match("(.+)%-.+") or sender
+    local isNotMe = sender ~= name
 
-    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.PlayerUpdate) then
+    if prefix == ADDON_PREFIX and isNotMe and text:find(Consts.MessageCommands.PlayerUpdate) then
         OnPlayerUpdateReceived(text, channel, sender)
     end
 
-    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.PlayerRemove) then
+    if prefix == ADDON_PREFIX and isNotMe and text:find(Consts.MessageCommands.PlayerRemove) then
         OnPlayerRemoveReceived(text, channel, sender)
     end
 
-    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.UserRequest) then
+    if prefix == ADDON_PREFIX and isNotMe and text:find(Consts.MessageCommands.UserRequest) then
         OnUserRequestReceived()
+    end
+
+    if prefix == ADDON_PREFIX and isNotMe and text:find(Consts.MessageCommands.Version) then
+        OnVersionCheckReceived(text, channel, sender)
+    end
+
+    if prefix == ADDON_PREFIX and isNotMe and text:find(Consts.MessageCommands.Message) then
+        OnMessageReceived(text, channel, sender)
     end
 
     if prefix == ADDON_PREFIX and name == "Promis" and text:find(Consts.MessageCommands.UserResponse) then
         OnUserResponseReceived(text, sender)
-    end
-
-    if prefix == ADDON_PREFIX and sender ~= name and text:find(Consts.MessageCommands.Message) then
-        text = text:match(Consts.MessageCommands.Message .. "(.+)")
-
-        -- Version check
-        if (text:match(Consts.MessageCommands.Version .. "(.+)")) then
-            OnVersionCheckReceived(text, channel, sender)
-            return
-        end
-
-        -- Other messages
-        PrintInfo(text)
     end
 end

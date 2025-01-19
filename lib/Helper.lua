@@ -104,13 +104,11 @@ function ShareNaughtyPlayer(playerName, playerData)
         return false
     end
 
-    local text = Consts.MessageCommands.PlayerUpdate .. serializedData
-    return SendAddonMessage(text)
+    return SendAddonMessage(Consts.MessageCommands.PlayerUpdate .. serializedData)
 end
 
 function ShareRemovedNaughtyPlayer(playerName)
-    local text = Consts.MessageCommands.PlayerRemove .. playerName
-    return SendAddonMessage(text)
+    return SendAddonMessage(Consts.MessageCommands.PlayerRemove .. playerName)
 end
 
 local throttleInterval = 0.5
@@ -119,8 +117,7 @@ local totalPlayersToSync = 0
 
 function SendMessage(message)
     local sender = UnitName("player")
-    local text = Consts.MessageCommands.Message .. message .. " by " .. sender
-    SendAddonMessage(text)
+    SendAddonMessage(Consts.MessageCommands.Message .. message .. " by " .. sender)
 end
 
 local function ProcessQueue()
@@ -183,8 +180,7 @@ end
 
 function BroadcastVersion()
     local sender = UnitName("player")
-    local text = Consts.MessageCommands.Message .. Consts.MessageCommands.Version .. ADDON_VERSION
-    local success = SendAddonMessage(text)
+    local success = SendAddonMessage(Consts.MessageCommands.Version .. ADDON_VERSION)
     if success then
         PrintDebug("Version " .. ADDON_VERSION .. " broadcasted.")
         return true
@@ -206,7 +202,6 @@ function PrintWarningMessage(naughtyPlayers)
 end
 
 function RequestAddonUsers()
-    local text = Consts.MessageCommands.UserRequest
     PrintInfo("Requesting user info...")
-    return SendAddonMessage(text)
+    return SendAddonMessage(Consts.MessageCommands.UserRequest)
 end
