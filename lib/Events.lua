@@ -7,7 +7,7 @@ end
 function OnPlayerLogin(self)
     self:UnregisterEvent(Consts.Events.PLAYER_LOGIN)
 
-    PrintInfo(ADDON_NAME .. " v" .. ADDON_VERSION .. " loaded")
+    PrintDebug(ADDON_NAME .. " v" .. ADDON_VERSION .. " loaded")
 
     AddPlayerContextMenu()
 
