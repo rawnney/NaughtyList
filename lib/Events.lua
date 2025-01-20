@@ -69,7 +69,8 @@ function OnVersionCheckReceived(text, distribution, sender)
     local name, _ = UnitName("player")
     if sender == name then return end
     local _, version = strsplit("@", text)
-    if version > ADDON_VERSION and not NewVersionAlerted then
+    local recievedVersion = tonumber(version)
+    if recievedVersion > ADDON_VERSION and not NewVersionAlerted then
         PrintInfo("A newer version of " .. ADDON_NAME .. " is available: v" .. version)
         PrintInfo("Download info: |cff00ff00|Haddon:nl-update-available|h[Click here]|h|r")
         NewVersionAlerted = true
