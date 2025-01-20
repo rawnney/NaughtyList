@@ -9,7 +9,7 @@ function CreateEventFrame()
 
     frame:SetScript("OnEvent", function(self, event, prefix, text, channel, sender)
         if not Consts:IsEventSupported(event) then return
-        elseif event == Consts.Events.ADDON_LOADED and prefix == ADDON_NAME then OnAddonLoaded(self)
+        elseif event == Consts.Events.ADDON_LOADED then OnAddonLoaded(self)
         elseif event == Consts.Events.CHAT_MSG_ADDON then OnChatMsgAddonEvent(prefix, text, channel, sender)
         elseif event == Consts.Events.GROUP_LEFT then OnGroupOrRaidLeft()
         elseif event == Consts.Events.GROUP_ROSTER_UPDATE then OnGroupRosterUpdate()

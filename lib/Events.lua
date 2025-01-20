@@ -21,18 +21,17 @@ function OnPlayerLogin(self)
         BroadcastVersion()
     end
 end
-    
 
 function OnPlayerUpdateReceived(text, channel, sender)
-    local playerName, playerData = DeserializePlayer(RemovePrefix(text, Consts.MessageCommands.PlayerUpdate))
+    local _, data = strsplit("@", text)
+    local playerName, playerData = DeserializePlayer(data)
+
+    if not isValidPlayerData(playerName, playerData) then
+        return
+    end
 
     if NaughtyListDB[playerName] then
         local updatedData = {}
-
-        if not isValidPlayerData(playerName, playerData) then
-            return
-        end
-
         for key, value in pairs(playerData) do
             if NaughtyListDB[playerName][key] ~= value then
                 updatedData[key] = value
@@ -50,7 +49,7 @@ function OnPlayerUpdateReceived(text, channel, sender)
 end
 
 function OnPlayerRemoveReceived(text, channel, sender)
-    local playerName = RemovePrefix(text, Consts.MessageCommands.PlayerRemove)
+    local _, playerName = strsplit("@", text)
 
     if NaughtyListDB[playerName] then
         NaughtyListDB[playerName] = nil
@@ -199,7 +198,7 @@ function OnUserResponseReceived(text, sender)
 end
 
 function OnMessageReceived(text)
-    local message = RemovePrefix(text, Consts.MessageCommands.Message)
+    local _, message = strsplit("@", text)
     PrintInfo(message)
 end
 

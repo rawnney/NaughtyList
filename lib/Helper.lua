@@ -23,13 +23,14 @@ function setSetting(key, value)
     PrintDebug(key .. " " .. tostring(value))
 end
 
-function PrintDebug(message)
-    if not getSetting("enableDebug") then return end
-    print(message)
-end
-
 local yellowPrefixPart = "|cff00ff00[NaughtyList] |r"
 local redPrefixPart = "|cffff0000[NaughtyList] |r"
+local debugPrefixPart = "|cffff00ff[DEBUG] |r"
+
+function PrintDebug(message)
+    if not getSetting("enableDebug") then return end
+    print(debugPrefixPart .. message)
+end
 
 function PrintInfo(message)
     print(yellowPrefixPart .. message)
@@ -66,15 +67,9 @@ function SerializePlayer(playerName, playerData)
     return serialized
 end
 
-function RemovePrefix(serialized, prefix)
-    return string.sub(serialized, string.len(prefix) + 1)
-end
-
 function DeserializePlayer(serialized)
-    local playerData = {strsplit("=", serialized, 2)}
-    local playerName = playerData[1]
-    local playerDataString = playerData[2]
-    local playerDataPairs = {strsplit(";", playerDataString or "")}
+    local playerName, playerData = strsplit("=", serialized, 2)
+    local playerDataPairs = {strsplit(";", playerData or "")}
     local data = {}
     for _, playerDataPair in ipairs(playerDataPairs) do
         if playerDataPair ~= "" then
@@ -82,6 +77,12 @@ function DeserializePlayer(serialized)
             data[dataPair[1]] = dataPair[2]
         end
     end
+
+    if not isValidPlayerData(playerName, data) then
+        PrintDebug("Invalid player data " .. playerName .. " " .. tostring(data))
+        return nil
+    end
+
     return playerName, data
 end
 
@@ -89,8 +90,10 @@ function SendAddonMessage(text)
     local sender = UnitName("player")
     local success = C_ChatInfo.SendAddonMessage(ADDON_PREFIX, text, "GUILD", sender)
     if success then
+        PrintDebug("MSG SUCCESS: " .. text)
         return true
     else
+        PrintDebug("MSG FAILED: " .. text)
         return false
     end
 end
@@ -111,7 +114,7 @@ function ShareRemovedNaughtyPlayer(playerName)
     return SendAddonMessage(Consts.MessageCommands.PlayerRemove .. playerName)
 end
 
-local throttleInterval = 0.5
+local throttleInterval = 1
 local playerQueue = {}
 local totalPlayersToSync = 0
 
@@ -133,7 +136,7 @@ local function ProcessQueue()
     local success = ShareNaughtyPlayer(playerName, playerData)
 
     if not success then
-        PrintDebug("Failed to share data for player:", playerName)
+        PrintDebug("Failed to share data for player:" .. playerName)
     end
 
     C_Timer.After(throttleInterval, ProcessQueue)
