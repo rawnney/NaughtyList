@@ -5,6 +5,7 @@ function CreateMainFrame()
 
     frame:SetSize(300, 400)
     frame:SetPoint("CENTER")
+    frame:SetClampedToScreen(true)
     frame:Hide()
     frame:SetMovable(true)
     frame:EnableMouse(true)
