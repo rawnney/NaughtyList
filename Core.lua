@@ -3,14 +3,18 @@ ADDON_VERSION = 1
 ADDON_PREFIX = "NaughtyList"
 ADDON_DOWNLOAD_LINK = "https://github.com/rawnney/NaughtyList/archive/refs/heads/master.zip"
 
-NaughtyListDB = {}
-NaughtyListConfigDB = {
+local DefaultNaughtyListDB = {}
+local DefaultNaughtyListConfigDB = {
     enableContextMenu = true,
     enableSoundAlert = true,
     enablePrintAlert = true,
     enableGuildSync = true,
-    enableDebug = false
+    enableDebug = false,
+    minimapPosition = {-80, 0},
 }
+
+NaughtyListDB = NaughtyListDB or DefaultNaughtyListDB
+NaughtyListConfigDB = NaughtyListConfigDB or DefaultNaughtyListConfigDB
 
 PlayerTexts = {}
 AlertedPlayers = {}

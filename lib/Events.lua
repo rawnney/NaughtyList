@@ -2,6 +2,7 @@ local updateTimer = nil
 
 function OnAddonLoaded(self)
     self:UnregisterEvent(Consts.Events.ADDON_LOADED)
+    CreateMinimapButtonFrame()
 end
 
 function OnPlayerLogin(self)

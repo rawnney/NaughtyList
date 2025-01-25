@@ -21,9 +21,8 @@ lib/Events.lua
 ui/DetailsFrame.lua
 ui/SettingsFrame.lua
 ui/MainFrame.lua
+ui/MinimapButtonFrame.lua
 
 lib/UpdateFrame.lua
 
 Core.lua
-
-ui/MinimapButton.lua

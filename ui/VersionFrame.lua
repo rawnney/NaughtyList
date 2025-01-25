@@ -42,7 +42,7 @@ function CreateUpdateVersionFrame()
 
     local step4 = promptFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     step4:SetPoint("TOPLEFT", step3, "BOTTOMLEFT", 0, -10)
-    step4:SetText("4. /reload & stay naughty!")
+    step4:SetText("4. /reload")
 
     local middleButton = CreateFrame("Button", nil, promptFrame, "UIPanelButtonTemplate")
     middleButton:SetSize(100, 25)
