@@ -8,6 +8,7 @@
 ## X-Localizations: enUS
 ## SavedVariables: NaughtyListDB, NaughtyListConfigDB
 
+lib/InitiateDB.lua
 lib/Consts.lua
 lib/Helper.lua
 lib/ContextMenu.lua

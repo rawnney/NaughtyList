@@ -25,7 +25,7 @@ function CreateMinimapButtonFrame()
     border:SetSize(54, 54)
     border:SetPoint("TOPLEFT")
 
-    local x, y = unpack(NaughtyListConfigDB.minimapPosition)
+    local x, y = unpack(NaughtyListConfigDB.minimapPosition or DefaultNaughtyListConfigDB.minimapPosition)
     frame:SetPoint("CENTER", Minimap, "CENTER", x, y)
 
     -- Function to update the button's position around the minimap
